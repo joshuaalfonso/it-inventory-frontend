@@ -1,0 +1,252 @@
+
+
+
+<div class="mb-8 ">
+    <button class="flex items-center gap-2" (click)="goBack()">
+        <i class="pi pi-arrow-left text-xs "></i>
+        back
+    </button>
+</div>
+
+<app-loading-spinner *ngIf="isLoading"/>
+
+<div class="bg-[var(--surface-card)] py-8 px-5 rounded-md border border-[var(--surface-border)]" *ngIf="!isLoading">
+    <div class="max-w-5xl mx-auto">
+        <h1 class="text-xl font-medium mb-4">Purchase Order Form</h1>
+        <span class="opacity-60">Fields with * are required.</span>
+
+        <form [formGroup]="purchaseOrderForm" class="p-fluid space-y-6 mt-6">
+
+            <div class="grid grid-cols-2 gap-4">
+
+                <fieldset class="space-y-1.5">
+                    <label>
+                        <span class="opacity-60 font-medium">PO Date</span>
+                        <span class="text-red-400">&nbsp; *</span>
+                    </label>
+                    <div>
+                        <p-calendar 
+                            formControlName="purchase_order_date"
+                            appendTo="body" 
+                        />
+                    </div>
+                    <div class="text-sm text-red-400" *ngIf="purchaseOrderForm.get('purchase_order_date')?.invalid && submitted">
+                        This field is required.
+                    </div>
+                </fieldset>
+
+                <fieldset class="space-y-1.5">
+                    <label>
+                        <span class="opacity-60 font-medium">PO #</span>
+                        <span class="text-red-400">&nbsp; *</span>
+                    </label>
+                    <input 
+                        type="text" 
+                        pInputText 
+                        formControlName="purchase_order_number"  
+                    />
+                    <div class="text-sm text-red-400" *ngIf="purchaseOrderForm.get('purchase_order_number')?.invalid && submitted">
+                        This field is required.
+                    </div>
+                </fieldset>
+
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+
+                <fieldset class="space-y-1.5">
+                    <label>
+                        <span class="opacity-60 font-medium">PR #</span>
+                        <span class="text-red-400">&nbsp; *</span>
+                    </label>
+                    <input 
+                        type="text" 
+                        pInputText 
+                        formControlName="purchase_requisition_number"  
+                    />
+                    <div class="text-sm text-red-400" *ngIf="purchaseOrderForm.get('purchase_requisition_number')?.invalid && submitted">
+                        This field is required.
+                    </div>
+                </fieldset>
+
+                <fieldset class="space-y-1.5">
+                    <label>
+                        <span class="opacity-60 font-medium">Delivery Date</span>
+                        <span class="text-red-400">&nbsp; *</span>
+                    </label>
+                    <div>
+                        <p-calendar 
+                            formControlName="delivery_date"
+                            appendTo="body" 
+                        />
+                    </div>
+                    <div class="text-sm text-red-400" *ngIf="purchaseOrderForm.get('delivery_date')?.invalid && submitted">
+                        This field is required.
+                    </div>
+                </fieldset>
+
+            </div>
+
+
+            <fieldset class="space-y-4">
+                <h1 class="opacity-60 font-medium mb-4">Item Detail</h1>
+                <p-table
+                    [value]="purchaseOrderItems.controls"
+                    responsiveLayout="scroll"
+                    *ngIf="purchaseOrderItems.length > 0"
+                >
+
+                    <ng-template pTemplate="header">
+                    <tr>
+                        <th>
+                            <span class="opacity-60">Item</span>
+                            <span class="text-red-400">&nbsp; *</span>
+                        </th>
+                        <th>
+                            <span class="opacity-60">Employee</span>
+                            <span class="text-red-400">&nbsp; *</span>
+                        </th>
+                        <th>
+                            <span class="opacity-60">Ordered Qty</span>
+                            <span class="text-red-400">&nbsp; *</span>
+                        </th>
+                        <th>
+                            <span class="opacity-60">Price</span>
+                            <span class="text-red-400">&nbsp; *</span>
+                        </th>
+                        <th class="opacity-60">Action</th>
+                    </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-row let-i="rowIndex">
+                    <tr [formGroup]="row">
+
+                        <td>
+                            <div>
+                                <p-dropdown 
+                                    formControlName="item_id" 
+                                    [options]="itemStore.item()"
+                                    optionLabel="item_name"
+                                    optionValue="item_id"
+                                    placeholder="Select a Item" 
+                                    appendTo="body"
+                                    [filter]="true"
+                                    [autofocusFilter]="false"
+                                />
+                            </div>
+                            <small
+                                class="text-red-400"
+                                *ngIf="
+                                    row.get('item_id')?.hasError('required') &&
+                                    submitted
+                                "
+                            >
+                                This field is required.
+                            </small>
+                        </td>
+
+                        <td>
+                            <div>
+                                <p-dropdown 
+                                    formControlName="employee_id" 
+                                    [options]="employeeStore.employee()"
+                                    optionLabel="employee_name"
+                                    optionValue="employee_id"
+                                    placeholder="Select a Employee" 
+                                    appendTo="body"
+                                    [filter]="true"
+                                    [autofocusFilter]="false"
+                                />
+                            </div>
+                            <small
+                                class="text-red-400"
+                                *ngIf="
+                                    row.get('employee_id')?.hasError('required') &&
+                                    submitted
+                                "
+                            >
+                                This field is required.
+                            </small>
+                        </td>
+
+                        <td>
+                            <p-inputNumber
+                                formControlName="ordered_quantity"
+                                [min]="1"
+                            ></p-inputNumber>
+                            <small
+                                class="text-red-400"
+                                *ngIf="
+                                    row.get('ordered_quantity')?.hasError('min') &&
+                                    submitted
+                                "
+                            >
+                                 Must be greater than 0.
+                            </small>
+                        </td>
+
+                        <td>
+                            <p-inputNumber
+                                formControlName="price"
+                                [min]="0"
+                                mode="currency"
+                                currency="PHP"
+                            ></p-inputNumber>
+                            <small
+                                class="text-red-400"
+                                *ngIf="
+                                    row.get('price')?.hasError('min') &&
+                                    submitted
+                                "
+                            >
+                                Must be greater than 0.
+                            </small>
+                        </td>
+
+                        <td>
+                       
+                            <p-button 
+                                icon="pi pi-times"
+                                [text]="true"
+                                severity="danger"
+                                (click)="removeRow(i)"
+                            />
+                        </td>
+
+                    </tr>
+                    </ng-template>
+
+                </p-table>
+
+
+                <div class="flex items-center justify-between">
+                    <p-button 
+                        icon="pi pi-plus"
+                        [text]="true"
+                        severity="success"
+                        (click)="addRow()"
+                    />
+                    <div *ngIf="totalQuantity">
+                        <span>Total Quantity: </span>
+                        <span> &nbsp; {{ (totalQuantity || 0) | number  }}</span>
+                    </div>
+                </div>
+
+                 <div
+                    class="grid place-items-center my-5" 
+                    *ngIf="purchaseOrderItems.length == 0"
+                >
+                    No Items!
+                </div>
+                    
+            </fieldset>
+
+            <div class="flex items-center justify-end">
+                <p-button label="Create" (click)="onSubmit()" />
+            </div>
+
+
+        </form>
+
+    </div>
+</div>

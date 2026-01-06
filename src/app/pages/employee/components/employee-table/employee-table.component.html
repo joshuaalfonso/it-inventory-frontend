@@ -1,0 +1,69 @@
+
+
+
+<div class="p-8 border border-[var(--surface-border)] bg-[var(--surface-card)] rounded-md">
+    <div class="flex justify-between mb-3">
+        <p-iconField iconPosition="left" class="">
+            <p-inputIcon>
+                <i class="pi pi-search"></i>
+            </p-inputIcon>
+            <input 
+                pInputText 
+                type="text" 
+                placeholder="Search keyword"
+                styleClass="bg-none!" 
+            />
+                <!-- (input)="dt1.filterGlobal($event.target.value , 'contains')"  -->
+        </p-iconField>
+        <p-button label="Create" (click)="dialogStore.openDialog()" />
+    </div>
+    <p-table 
+        #dt1
+        [value]="employee()" 
+        [tableStyle]="{ 'min-width': '' }"
+        [paginator]="employee().length > 10"
+        [rows]="10"
+        [rowsPerPageOptions]="[10, 15, 20]"
+        styleClass="p-datatable-sm"
+    >
+        <ng-template pTemplate="header">
+            <tr>
+                <th>#</th>
+                <th>Employee</th>
+                <th>Email</th>
+                <th>Department</th>
+                <th>Created At</th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item let-rowIndex="rowIndex">
+            <tr>
+                <td>{{ rowIndex + 1 }}</td>
+                <td>
+                    <span class="font-semibold">
+                        {{ item.employee_name }}
+                    </span>
+                </td>
+                <td>
+                    <span class="font-semibold">
+                        {{ item.email }}
+                    </span>
+                </td>
+                <td>
+                        {{ item.department_name }}
+                </td>
+                <td>{{ item.created_at | date: 'medium' }}</td>
+                <td>
+                     <p-button 
+                        (click)="openMenu($event, item)"
+                        icon="pi pi-ellipsis-h"
+                        severity="secondary"
+                        [text]="true"
+                    />
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-menu #menu [model]="menus" [popup]="true" />

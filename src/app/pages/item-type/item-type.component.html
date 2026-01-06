@@ -1,0 +1,22 @@
+
+<h1 class="text-xl font-semibold mb-8">Item Type</h1>
+
+<app-loading-spinner *ngIf="itemTypeStore.loading()"/>
+
+<app-item-type-table 
+    [itemType]="itemTypeStore.itemType"
+    *ngIf="!itemTypeStore.loading()"
+/>
+
+<app-item-type-dialog />
+
+<!-- <zxing-scanner 
+
+        [videoConstraints]="{
+        width: { ideal: 640 },
+        height: { ideal: 480 },
+        frameRate: { ideal: 15 }
+    }"
+    (scanError)="onScanError($event)"
+    (scanSuccess)="handleScan($event)" 
+></zxing-scanner> -->

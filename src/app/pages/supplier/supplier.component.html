@@ -1,0 +1,11 @@
+
+<h1 class="text-xl font-semibold mb-8">Supplier</h1>
+
+<app-loading-spinner *ngIf="supplierStore.loading()"/>
+
+<app-supplier-table 
+    [supplier]="supplierStore.supplier"
+    *ngIf="!supplierStore.loading()"
+/>
+
+<app-supplier-dialog />

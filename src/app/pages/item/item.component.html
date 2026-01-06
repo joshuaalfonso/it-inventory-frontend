@@ -1,0 +1,117 @@
+
+
+<div class="flex items-center justify-between mb-8">
+    <div>
+        <h1 class="text-xl font-semibold">Item</h1>
+    </div>
+     <p-button label="Create" (click)="dialogStore.openDialog()" />
+</div>
+
+
+<div *ngIf="itemStore.loading()">
+  Loading...
+</div>
+
+
+<!-- <div class="mb-3 flex flex-wrap gap-3 items-center justify-between">
+    <div class="space-x-3">
+        <input 
+            pInputText 
+            type="text" 
+            placeholder="Search keyword" 
+            (input)="setSearch($event)"
+        />
+        <app-item-filter />
+        <p-button label="Create" (click)="dialogStore.openDialog()" />
+    </div>
+    <div class="flex items-center justify-end w-full md:w-auto gap-2">
+        <div class="border border-[var(--surface-border)] rounded-md">
+        <p-selectButton 
+            [options]="viewOptions" 
+            [(ngModel)]="currentView" 
+            optionLabel="icon"
+            optionValue="value"
+        >
+                <ng-template let-item pTemplate>
+                    <i [class]="item.icon"></i>
+                </ng-template>
+        </p-selectButton>
+    </div>
+    </div>
+</div> -->
+
+
+<div class="border border-[var(--surface-border)] bg-[var(--surface-card)] rounded-xl px-5 xl:px-8 py-8">
+
+       
+    <div class="mb-3 flex flex-wrap gap-3 items-center justify-between">
+        <div class="space-x-3">
+            <input 
+                pInputText 
+                type="text" 
+                placeholder="Search keyword" 
+                (input)="setSearch($event)"
+            />
+            <app-item-filter />
+        </div>
+        <div class="border border-[var(--surface-border)] rounded-md">
+            <p-selectButton 
+                [options]="viewOptions" 
+                [(ngModel)]="currentView" 
+                optionLabel="icon"
+                optionValue="value"
+                [unselectable]="true"
+            >
+                <ng-template let-item pTemplate>
+                    <i [class]="item.icon"></i>
+                </ng-template>
+            </p-selectButton>
+        </div>
+
+    </div>
+
+    <fieldset class="w-fit px-4 py-4 my-4 border border-dashed border-[var(--surface-border)] rounded-md" *ngIf="itemStore.filters().brand_id.length > 0">
+        <legend>Filters</legend>
+        <ul class="flex flex-wrap gap-2 ">
+            <li *ngFor="let item of itemStore.filters().brand_id">
+                <p-chip 
+                    label="{{getBrandValue(item)}}" 
+                    [removable]="true" 
+                    (onRemove)="onRemoveBrand(item)"
+                />
+            </li>
+        </ul>
+    </fieldset>
+    <p-button 
+        (click)="itemStore.resetFilters()"
+        icon="pi pi-trash"
+        label="Clear Filters"
+        size="small"
+        severity="danger"
+        [text]="true"
+        *ngIf="itemStore.filters().brand_id.length > 0"
+    />
+
+
+
+    <div class="my-6">
+        <!-- <p-divider /> -->
+         <hr class="border-1 border-[var(--surface-border)]">
+    </div>
+
+    <app-item-table 
+        [item]="itemStore.filteredItem"
+        *ngIf="!itemStore.loading() && currentView == 'list'"
+    />
+
+    <app-item-cards 
+        [item]="itemStore.filteredItem"
+        *ngIf="!itemStore.loading() && currentView == 'grid'"
+    />
+</div>
+
+
+
+
+
+<app-item-dialog />

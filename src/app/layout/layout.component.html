@@ -1,0 +1,22 @@
+
+
+
+
+<main class="h-svh flex bg-[var(--surface-ground)]">
+
+    <app-sidebar />
+
+    <div class=" flex-1 min-h-svh overflow-y-auto ">
+
+        <app-header />
+
+        <section class="py-6 px-8 md:px-12 xl:px-16 overflow-x-hidden">
+            <router-outlet />
+        </section>
+
+    </div>
+
+</main>
+
+<p-toast />
+<p-confirmDialog />

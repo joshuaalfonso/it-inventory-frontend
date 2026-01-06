@@ -1,0 +1,12 @@
+:host ::ng-deep td .p-image img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    /* display: block;
+    margin: auto; */
+}
+
+:host ::ng-deep td .p-image {
+    height: 55px;
+    width: 55px;
+}

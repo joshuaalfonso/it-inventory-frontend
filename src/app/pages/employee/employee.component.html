@@ -1,0 +1,11 @@
+
+<h1 class="text-xl font-semibold mb-8">Employee</h1>
+
+<app-loading-spinner *ngIf="employeeStore.loading()"/>
+
+<app-employee-table 
+    [employee]="employeeStore.employee"
+    *ngIf="!employeeStore.loading()"
+/>
+
+<app-employee-dialog />

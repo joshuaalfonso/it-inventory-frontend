@@ -1,0 +1,11 @@
+<h1 class="text-xl font-semibold mb-8">Purchase Order</h1>
+
+
+<app-loading-spinner *ngIf="purchaseOrderStore.loading()" />
+
+<app-purchase-order-table 
+    [purchaseOrder]="purchaseOrderStore.purchaseOrder"
+    *ngIf="!purchaseOrderStore.loading()"
+/>
+
+

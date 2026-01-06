@@ -1,0 +1,7 @@
+
+
+
+
+:host ::ng-deep p-image img {
+    @apply w-auto h-full object-contain
+}

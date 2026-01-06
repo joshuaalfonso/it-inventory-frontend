@@ -1,0 +1,9 @@
+
+
+
+
+
+
+td,th, tr {
+    @apply border-dotted
+}

@@ -1,0 +1,40 @@
+<ul class="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6 ">
+    <li *ngFor="let item of item()" class="bg-[var(--surface-card)] border border-[var(--surface-border)] rounded-xl p-5">
+        <div class="space-y-3">
+            <div class="h-52 w-full ">
+                <img 
+                    [src]="imageBaseUrl + item.image_name" 
+                    alt="image"
+                    class="h-full w-full object-cover rounded-md"
+                >
+            </div>
+            <h3 class="uppercase text-[var(--primary-color)] text-xs">{{ item.brand_name }}</h3>
+            <div class="h-[45px] overflow-y-hidden ">
+                <h1 class="font-semibold">{{ item.item_name }}</h1>
+            </div>
+            <div class="flex flex-wrap items-center gap-3">
+                <div class="flex items-center gap-2">
+                    <i class="pi pi-tag flex text-sm opacity-30"></i>
+                    <span class="opacity-80">{{ item.category_name }}</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <i class="pi pi-barcode flex text-sm opacity-30"></i>
+                    <span class="opacity-80">{{ item.item_type_name }}</span>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between py-2 border-t border-[var(--surface-border)]">
+                <h4 class="flex items-center gap-2">
+                    <span class="text-base font-semibold">232</span>
+                    <span class="opacity-80">{{ item.uom_name }}</span>
+                </h4>
+                <p-button 
+                    icon="pi pi-ellipsis-h" 
+                    [text]="true"
+                    severity="secondary" 
+                />
+            </div>
+
+        </div>
+    </li>
+</ul>

@@ -1,0 +1,11 @@
+
+<h1 class="text-xl font-semibold mb-8">Department</h1>
+
+<app-loading-spinner *ngIf="departmentStore.loading()"/>
+
+<app-department-table 
+    [department]="departmentStore.department"
+    *ngIf="!departmentStore.loading()"
+/>
+
+<app-department-dialog />

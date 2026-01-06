@@ -1,0 +1,92 @@
+
+
+
+<p-dialog 
+    header="Supplier Form" 
+    [modal]="true" 
+    [draggable]="false"
+    [visible]="dialogStore.open()" 
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
+    [style]="{ width: '35vw' }" 
+    [focusOnShow]="false"
+    (onHide)="onClose()"
+>
+
+    <span class="p-text-secondary block mb-5 text-sm">Fields with * are required.</span>
+
+    <form 
+        [formGroup]="supplierForm" 
+        (ngSubmit)="onSubmit()"
+        class="p-fluid space-y-6"
+    >
+
+        <fieldset class="space-y-1.5">
+            <label>
+                <span class="font-medium text-sm opacity-80"> Supplier  </span>
+                <span class="text-red-400">*</span>
+            </label>
+            <input type="text" pInputText formControlName="supplier_name" />
+             <div class="text-sm text-red-400" *ngIf="supplierForm.get('supplier_name')?.invalid && submitted">
+                Must be at least 2 characters.
+            </div>
+        </fieldset>
+
+        <fieldset class="space-y-1.5">
+            <label>
+                <span class="font-medium text-sm opacity-80"> Supplier Address </span>
+                <span class="text-red-400">*</span>
+                 <!-- <span class="text-xs opacity-60">(Optional)</span> -->
+            </label>
+            <textarea 
+                rows="3"
+                cols="30" 
+                pInputTextarea 
+                formControlName="supplier_address"
+            >
+            </textarea>
+            <div class="text-sm text-red-400" *ngIf="supplierForm.get('supplier_address')?.invalid && submitted">
+                This field is required.
+            </div>
+        </fieldset>
+
+        <fieldset class="space-y-1.5">
+            <label>
+                <span class="font-medium text-sm opacity-80"> Contact Person </span>
+                <span class="text-red-400">*</span>
+                <!-- <span class="text-xs opacity-60">(Optional)</span> -->
+            </label>
+            <input type="text" pInputText formControlName="contact_person" />
+            <div class="text-sm text-red-400" *ngIf="supplierForm.get('supplier_name')?.invalid && submitted">
+                 This field is required.
+            </div>
+        </fieldset>
+
+        <fieldset class="space-y-1.5">
+            <label>
+                <span class="font-medium text-sm opacity-80"> Contact # </span>
+                <span class="text-red-400">*</span>
+                <!-- <span class="text-xs opacity-60">(Optional)</span> -->
+            </label>
+            <input type="text" pInputText formControlName="contact_number" />
+             <div class="text-sm text-red-400" *ngIf="supplierForm.get('supplier_name')?.invalid && submitted">
+                 This field is required.
+            </div>
+        </fieldset>
+
+    </form>
+
+    <ng-template pTemplate="footer">
+        <p-button 
+            label="Cancel" 
+            [text]="true" 
+            severity="secondary" 
+            (onClick)="onClose()" />
+        <p-button 
+            label="Create" 
+            [loading]="isWorking"
+            (onClick)="onSubmit()"
+        />
+    </ng-template>
+   
+
+</p-dialog>

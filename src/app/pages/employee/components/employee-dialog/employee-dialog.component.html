@@ -1,0 +1,83 @@
+
+
+
+<p-dialog 
+    header="Employee Form" 
+    [modal]="true" 
+    [draggable]="false"
+    [visible]="dialogStore.open()" 
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
+    [style]="{ width: '35vw' }" 
+    [focusOnShow]="false"
+    (onHide)="onClose()"
+>
+
+    <span class="p-text-secondary block text-sm mb-5">Fields with * are required.</span>
+
+    <form 
+        [formGroup]="employeeForm" 
+        (ngSubmit)="onSubmit()"
+        class="p-fluid space-y-6"
+    >
+
+        <fieldset class="space-y-1.5">
+            <label>
+                <span class="font-medium text-sm opacity-80"> Employee </span>
+                <span class="text-red-400">*</span>
+            </label>
+            <input type="text" pInputText formControlName="employee_name" />
+             <div class="text-sm text-red-400" *ngIf="employeeForm.get('employee_name')?.invalid && submitted">
+                Must be at least 2 characters.
+            </div>
+        </fieldset>
+
+        <fieldset class="space-y-1.5">
+            <label>
+                <span class="font-medium text-sm opacity-80"> Email </span>
+                <span class="text-red-400">*</span>
+            </label>
+            <input type="email" pInputText formControlName="email" />
+             <div class="text-sm text-red-400" *ngIf="employeeForm.get('email')?.invalid && submitted">
+                This filed is required.
+            </div>
+        </fieldset>
+
+        <fieldset class="space-y-1.5">
+            <label>
+                <span class="font-medium text-sm opacity-80"> Department </span>
+                <span class="text-red-400">*</span>
+            </label>
+            <div>
+                <p-dropdown 
+                    formControlName="department_id" 
+                    [options]="departmentStore.department()"
+                    optionLabel="department_name"
+                    optionValue="department_id"
+                    placeholder="Select a Department" 
+                    appendTo="body"
+                    [filter]="true"
+                    [autofocusFilter]="false"
+                />
+            </div>
+            <div class="text-sm text-red-400" *ngIf="employeeForm.get('department_id')?.invalid && submitted">
+                This field is required.
+            </div>
+        </fieldset>
+
+    </form>
+
+    <ng-template pTemplate="footer">
+        <p-button 
+            label="Cancel" 
+            [text]="true" 
+            severity="secondary" 
+            (onClick)="onClose()" />
+        <p-button 
+            label="Create" 
+            [loading]="isWorking"
+            (onClick)="onSubmit()"
+        />
+    </ng-template>
+   
+
+</p-dialog>

@@ -1,0 +1,11 @@
+
+<h1 class="text-xl font-semibold mb-8">Category</h1>
+
+<app-loading-spinner *ngIf="categoryStore.loading()"/>
+
+<app-category-table 
+    [category]="categoryStore.category"
+    *ngIf="!categoryStore.loading()"
+/>
+
+<app-category-dialog />

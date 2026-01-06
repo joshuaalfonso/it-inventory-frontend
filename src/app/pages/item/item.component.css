@@ -1,0 +1,11 @@
+
+
+
+
+:host ::ng-deep .p-chip-text {
+    @apply text-xs
+}
+
+:host ::ng-deep p-chip svg {
+    @apply h-[12px]
+}

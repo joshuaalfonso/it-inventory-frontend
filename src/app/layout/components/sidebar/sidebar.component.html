@@ -1,0 +1,162 @@
+
+
+
+
+
+<aside class="w-0 xl:w-[276px] h-full xl:border-r border-[var(--surface-border)] overflow-x-hidden px-0 xl:px-5 space-y-6">
+
+    <div class="h-[50px] flex items-center justify-center">
+        <h1 class="flex items-center gap-2 text-xl font-bold">
+            <img 
+                src="/assets/icons/box-2.svg" 
+                alt="Logo Icon" 
+                class="w-7 h-7"  
+            />
+            Asset Inventory
+        </h1>
+    </div>
+
+    <div class="space-y-3">
+
+        <h1 class="text-xs uppercase font-medium opacity-60">Main</h1>
+
+        <ul class="space-y-1.5">
+            <li>
+                <a 
+                    routerLink="dashboard" 
+                    routerLinkActive="active" 
+                    class="flex items-center gap-3 py-2 px-3 rounded-md hover:bg-teal-500/10 cursor-pointer"
+                >
+                    <img src="/assets/icons/top-bottom-grid.svg" alt="Grid Icon" class="w-5 h-5"/>
+                    <span class="font-medium">Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a 
+                    class="flex items-center gap-3 py-2 px-3 rounded-md hover:bg-teal-500/10 cursor-pointer" 
+                    (click)="toggleCollapse('item')"
+                >
+                    <img src="/assets/icons/forward-item.svg" alt="Grid Icon" class="w-5 h-5"  />
+                    <span class="flex-1 font-medium">Item</span>
+                    <img src="/assets/icons/arrow-down-02.svg" alt="Grid Icon" class="w-4 h-4 ease-out duration-100" [ngClass]="{'-rotate-90' : isCollapsed('item')}"  />
+                </a>
+                <div class="grid grid-rows-[0fr] ease-out duration-100" [ngClass]="{'grid-rows-[1fr]' : isCollapsed('item')}">
+                    <div class="overflow-hidden">
+                        <ul class="mt-1 text-xs ml-6 pl-3 space-y-1 border-l border-[var(--surface-border)] [&>li>a]:block [&>li>a]:cursor-pointer [&>li>a]:rounded-md [&>li>a]:font-medium">
+                            <li>
+                                <a 
+                                    routerLink="item" 
+                                    class="py-2 px-4  hover:bg-teal-500/10" 
+                                    routerLinkActive="active"
+                                >
+                                    Item
+                                </a>
+                            </li>
+                            <li>
+                                <a 
+                                    routerLink="brand" 
+                                    class="py-2 px-4 hover:bg-teal-500/10" 
+                                    routerLinkActive="active"
+                                >
+                                    Brand
+                                </a>
+                            </li>
+                            <li>
+                                <a 
+                                    routerLink="category" 
+                                    class="py-2 px-4 hover:bg-teal-500/10" 
+                                    routerLinkActive="active"
+                                >
+                                    Category
+                                </a>
+                            </li>
+                            <li>
+                                <a 
+                                    routerLink="item-type" 
+                                    class="py-2 px-4 hover:bg-teal-500/10" 
+                                    routerLinkActive="active"
+                                >
+                                    Type
+                                </a>
+                            </li>
+                            <li>
+                                <a 
+                                    routerLink="unit-of-measure" 
+                                    class="py-2 px-4 hover:bg-teal-500/10" 
+                                    routerLinkActive="active"
+                                >
+                                    Unit of Measure
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+
+            <li>
+                <a class="flex items-center gap-3 py-2 px-3 rounded-md hover:bg-teal-500/10 cursor-pointer" (click)="toggleCollapse('employee')">
+                    <img src="/assets/icons/profile-2user.svg" alt="Grid Icon" class="w-5 h-5"  />
+                    <span class="flex-1 font-medium">Employee</span>
+                    <img src="/assets/icons/arrow-down-02.svg" alt="Grid Icon" class="w-4 h-4 ease-out duration-100" [ngClass]="{'-rotate-90' : isCollapsed('employee')}"  />
+                </a>
+                <div class="grid grid-rows-[0fr] ease-out duration-100" [ngClass]="{'grid-rows-[1fr]' : isCollapsed('employee')}">
+                    <div class="overflow-hidden">
+                        <ul class="mt-1 text-xs ml-6 pl-3 space-y-1 border-l border-[var(--surface-border)] [&>li>a]:block [&>li>a]:cursor-pointer [&>li>a]:rounded-md [&>li>a]:font-medium">
+                            <li>
+                                <a 
+                                    routerLink="employee" 
+                                    class="py-2 px-4  hover:bg-teal-500/10" 
+                                    routerLinkActive="active"
+                                >
+                                    List
+                                </a>
+                            </li>
+                            <li>
+                                <a 
+                                    routerLink="department" 
+                                    class="py-2 px-4 hover:bg-teal-500/10" 
+                                    routerLinkActive="active"
+                                >
+                                    Department
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+
+            <li>
+                <a 
+                    routerLink="supplier" 
+                    routerLinkActive="active" 
+                    class="flex items-center gap-3 py-2 px-3 rounded-md hover:bg-teal-500/10 cursor-pointer">
+                    <img src="/assets/icons/shop.svg" alt="Grid Icon" class="w-5 h-5"  />
+                    <span class="font-medium">Supplier</span>
+                </a>
+            </li>
+            
+        </ul>
+
+    </div>
+
+    <div class="space-y-3">
+
+        <h1 class="text-xs uppercase font-medium opacity-60">Transaction</h1>
+
+        <ul class="space-y-1.5">
+
+            <li>
+                <a 
+                    routerLink="purchase-order" 
+                    routerLinkActive="active" 
+                    class="flex items-center gap-3 py-2 px-3 rounded-md hover:bg-teal-500/10 cursor-pointer">
+                    <img src="/assets/icons/shopping-cart.svg" alt="Grid Icon" class="w-5 h-5"  />
+                    <span class="font-medium">Purchase Order</span>
+                </a>
+            </li>
+            
+        </ul>
+
+    </div>
+
+</aside>

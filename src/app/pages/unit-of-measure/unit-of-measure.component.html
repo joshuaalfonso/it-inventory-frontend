@@ -1,0 +1,11 @@
+
+<h1 class="text-xl font-semibold mb-8">Unit of Measure</h1>
+
+<app-loading-spinner *ngIf="unitOfMeasureStore.loading()"/>
+
+<app-unit-of-measure-table 
+    [unitOfMeasure]="unitOfMeasureStore.unitOfMeasure"
+    *ngIf="!unitOfMeasureStore.loading()"
+/>
+
+<app-unit-of-measure-dialog />

@@ -1,0 +1,7 @@
+
+
+:host ::ng-deep .p-sidebar {
+    border-left: 0;
+    border-top: 0;
+    border-bottom: 0;
+}

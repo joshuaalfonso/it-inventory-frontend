@@ -1,0 +1,50 @@
+
+
+
+<p-dialog 
+    header="Brand Form" 
+    [modal]="true" 
+    [draggable]="false"
+    [visible]="dialogStore.open()" 
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
+    [style]="{ width: '35vw' }" 
+    [focusOnShow]="false"
+    (onHide)="onClose()"
+>
+    <span class="p-text-secondary block mb-5">Fields with * are required.</span>
+
+    <form 
+        [formGroup]="brandForm" 
+        (ngSubmit)="onSubmit()"
+        class="p-fluid"
+    >
+
+        <fieldset class="space-y-1.5">
+            <label>
+                Brand
+                <span class="text-red-400">*</span>
+            </label>
+            <input type="text" pInputText formControlName="brand_name" />
+             <div class="text-sm text-red-400" *ngIf="brandForm.get('brand_name')?.invalid && submitted">
+                Must be at least 2 characters.
+            </div>
+        </fieldset>
+
+    </form>
+
+    <ng-template pTemplate="footer">
+        <p-button 
+            label="Cancel" 
+            [text]="true" 
+            severity="secondary" 
+            (onClick)="onClose()" />
+        <p-button 
+            label="Create" 
+            [loading]="isWorking"
+            (onClick)="onSubmit()"
+        />
+    </ng-template>
+
+   
+
+</p-dialog>

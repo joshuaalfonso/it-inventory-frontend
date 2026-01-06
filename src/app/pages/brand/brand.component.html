@@ -1,0 +1,12 @@
+<h1 class="text-xl font-semibold mb-8">Brand</h1>
+
+
+<app-loading-spinner *ngIf="brandStore.loading()" />
+
+<app-brand-table 
+    [brand]="brandStore.brand"
+    *ngIf="!brandStore.loading()"
+/>
+
+<app-brand-dialog />
+

@@ -1,0 +1,203 @@
+
+
+
+<p-dialog 
+    header="Item Form" 
+    [modal]="true" 
+    [draggable]="false"
+    [visible]="dialogStore.open()" 
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
+    [style]="{ width: '35vw' }" 
+    [focusOnShow]="false"
+    (onHide)="onClose()"
+>
+    <span class="p-text-secondary block mb-5">Fields with * are required.</span>
+
+    <form 
+        [formGroup]="itemForm" 
+        (ngSubmit)="onSubmit()"
+        class="p-fluid space-y-6"
+    >
+
+        <!-- <fieldset class="space-y-1.5">
+            <label>
+                Brand
+                <span class="text-red-400">*</span>
+            </label>
+            <input type="text" pInputText formControlName="image_name" />
+             <div class="text-sm text-red-400" *ngIf="itemForm.get('image_name')?.invalid && submitted">
+                Must be at least 2 characters.
+            </div>
+        </fieldset> -->
+
+        <fieldset *ngIf="dialogStore.selectedItem()?.image_name" class="flex justify-center w-full h-36">
+            <!-- <img [src]="imageBaseUrl + dialogStore.selectedItem()?.image_name" class="w-full h-full object-contain" /> -->
+            <p-image 
+                [src]="imageBaseUrl + dialogStore.selectedItem()?.image_name" 
+                alt="Image" 
+                [preview]="true" 
+                styleClass="!w-full !h-full !object-contain"
+                appendTo="body"
+            />
+        </fieldset>
+
+        
+        <fieldset class="space-y-1.5">
+            <label>
+                Image
+                <span class="text-xs opacity-60">(optional)</span>
+            </label>
+            <div class="flex items-center justify-center w-full">
+                <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-36 bg-neutral-secondary-medium border border-dashed border-[var(--surface-border)] rounded-md cursor-pointer hover:bg-neutral-tertiary-medium bg-[var(--surface-ground)]">
+                    <div class="flex flex-col items-center justify-center text-body pt-5 pb-6">
+                        <svg class="w-8 h-8 mb-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h3a3 3 0 0 0 0-6h-.025a5.56 5.56 0 0 0 .025-.5A5.5 5.5 0 0 0 7.207 9.021C7.137 9.017 7.071 9 7 9a4 4 0 1 0 0 8h2.167M12 19v-9m0 0-2 2m2-2 2 2"/></svg>
+                        <p class="mb-2 text-sm"><span class="font-semibold">Click to upload</span></p>
+                        <p class="text-xs">SVG, PNG, JPG, WEBP or GIF </p>
+                    </div>
+                    <input 
+                        id="dropzone-file" 
+                        type="file" 
+                        class="hidden" 
+                        accept="image/*"
+                        (change)="onFileSelected($event)" 
+                    />
+                </label>
+            </div> 
+            <div *ngIf="previewUrl" class="mt-6 space-y-2">
+                <p class="text-sm opacity-60">To Upload:</p>
+                <div class="grid place-items-center">
+                    <img [src]="previewUrl" alt="Image preview" class="h-40 object-contain border border-[var(--surface-border)] rounded-md" />
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset class="space-y-1.5">
+            <label>
+                Item Name
+                <span class="text-red-400">*</span>
+            </label>
+            <div>
+                 <textarea 
+                    rows="3" 
+                    cols="30" 
+                    pInputTextarea 
+                    formControlName="item_name">
+                </textarea>
+            </div>
+             <div class="text-sm text-red-400" *ngIf="itemForm.get('item_name')?.invalid && submitted">
+                Must be at least 2 characters.
+            </div>
+        </fieldset>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <fieldset class="space-y-1.5">
+                <label>
+                    Brand
+                    <span class="text-red-400">*</span>
+                </label>
+                <div>
+                    <p-dropdown 
+                        formControlName="brand_id" 
+                        [options]="brandStore.brand()"
+                        optionLabel="brand_name"
+                        optionValue="brand_id"
+                        placeholder="Select a Brand" 
+                        appendTo="body"
+                        [filter]="true"
+                        [autofocusFilter]="false"
+                    />
+                </div>
+                <div class="text-sm text-red-400" *ngIf="itemForm.get('brand_id')?.invalid && submitted">
+                    This field is required.
+                </div>
+            </fieldset>
+
+            <fieldset class="space-y-1.5">
+                <label>
+                    Category
+                    <span class="text-red-400">*</span>
+                </label>
+                <div>
+                    <p-dropdown 
+                        formControlName="category_id" 
+                        [options]="categoryStore.category()"
+                        optionLabel="category_name"
+                        optionValue="category_id"
+                        placeholder="Select a Category" 
+                        appendTo="body"
+                        [filter]="true"
+                        [autofocusFilter]="false"
+                    />
+                </div>
+                <div class="text-sm text-red-400" *ngIf="itemForm.get('category_id')?.invalid && submitted">
+                    This field is required.
+                </div>
+            </fieldset>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <fieldset class="space-y-1.5">
+                <label>
+                    Type
+                    <span class="text-red-400">*</span>
+                </label>
+                <div>
+                    <p-dropdown 
+                        formControlName="item_type_id" 
+                        [options]="itemTypeStore.itemType()"
+                        optionLabel="item_type_name"
+                        optionValue="item_type_id"
+                        placeholder="Select a Item Type" 
+                        appendTo="body"
+                        [filter]="true"
+                        [autofocusFilter]="false"
+                    />
+                </div>
+                <div class="text-sm text-red-400" *ngIf="itemForm.get('item_type_id')?.invalid && submitted">
+                    This field is required.
+                </div>
+            </fieldset>
+
+            <fieldset class="space-y-1.5">
+                <label>
+                    Unit of Measure
+                    <span class="text-red-400">*</span>
+                </label>
+                <div>
+                    <p-dropdown 
+                        formControlName="uom_id" 
+                        [options]="unitOfMeasureStore.unitOfMeasure()"
+                        optionLabel="uom_name"
+                        optionValue="uom_id"
+                        placeholder="Select a Unit" 
+                        appendTo="body"
+                        [filter]="true"
+                        [autofocusFilter]="false"
+                    />
+                </div>
+                <div class="text-sm text-red-400" *ngIf="itemForm.get('uom_id')?.invalid && submitted">
+                    This field is required.
+                </div>
+            </fieldset>
+        </div>
+
+
+    </form>
+
+    <ng-template pTemplate="footer">
+        <p-button 
+            label="Cancel" 
+            [text]="true" 
+            severity="secondary" 
+            (onClick)="onClose()" 
+        />
+        <p-button 
+            label="Create" 
+            [loading]="isWorking"
+            (onClick)="onSubmit()"
+        />
+    </ng-template>
+
+   
+
+</p-dialog>
