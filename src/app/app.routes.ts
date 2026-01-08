@@ -88,6 +88,24 @@ export const routes: Routes = [
                 import('./pages/purchase-order/components/create-edit-purchase-order/create-edit-purchase-order.component')
                     .then(c => c.CreateEditPurchaseOrderComponent)
             },
+            {
+                path: 'incoming',
+                loadComponent: () =>
+                import('./pages/incoming/incoming.component')
+                    .then(c => c.IncomingComponent)
+            },
+            {
+                path: 'incoming/create-edit/:incoming_id',
+                loadComponent: () =>
+                import('./pages/incoming/components/create-edit-incoming/create-edit-incoming.component')
+                    .then(c => c.CreateEditIncomingComponent)
+            },
+            {
+                path: 'outgoing',
+                loadComponent: () =>
+                import('./pages/outgoing/outgoing.component')
+                    .then(c => c.OutgoingComponent)
+            },
         ]
     },
 ];

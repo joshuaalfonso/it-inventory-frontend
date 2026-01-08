@@ -1,0 +1,10 @@
+
+
+
+
+
+:host ::ng-deep .p-dialog-header,
+:host ::ng-deep .p-dialog-footer,
+:host ::ng-deep .p-dialog-content {
+    @apply w-full max-w-7xl mx-auto 
+} 

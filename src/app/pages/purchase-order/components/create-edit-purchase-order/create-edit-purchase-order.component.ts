@@ -10,30 +10,12 @@ import { ItemStore } from '../../../item/store/item.store';
 import { EmployeeStore } from '../../../employee/store/employee.store';
 import { PurchaseOrderStore } from '../../store/purchase-order.store';
 import { PurchaseOrderItemPost } from '../../purchase-order.model';
-import { finalize, take, UnsubscriptionError } from 'rxjs';
+import { finalize, take } from 'rxjs';
 import { MessageService } from 'primeng/api';
 import { ActivatedRoute } from '@angular/router';
 import { PurchaseOrderService } from '../../purchase-order.service';
 import { LoadingSpinnerComponent } from '../../../../shared/components/loading-spinner/loading-spinner.component';
 
-
-// export interface PurchaseOrderPost {
-//   purchase_order_id: number
-//   purchase_order_date: string | null
-//   purchase_order_number: string
-//   purchase_requisition_number: string | null
-//   delivery_date: string | null
-//   total_quantity: number
-//   purchase_order_item: PurchaseOrderItemPost[]
-// }
-
-// export interface PurchaseOrderItemPost {
-//   purchase_order_item_id: number | undefined
-//   item_id: number
-//   employee_id: number
-//   ordered_quantity: number
-//   price: number
-// }
 
 
 @Component({

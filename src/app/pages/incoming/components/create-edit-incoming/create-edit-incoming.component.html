@@ -1,0 +1,155 @@
+
+
+
+<div class="mb-8 ">
+    <button class="flex items-center gap-2" (click)="goBack()">
+        <i class="pi pi-arrow-left text-xs "></i>
+        back
+    </button>
+</div>
+
+
+<div class="bg-[var(--surface-card)] py-8 px-5 rounded-md border border-[var(--surface-border)]" >
+
+    <div class="max-w-5xl mx-auto">
+        <h1 class="text-xl font-medium mb-4">Incoming Form</h1>
+        <span class="opacity-60">Fields with * are required.</span>
+
+        <form class="p-fluid space-y-6 mt-6">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                <fieldset class="space-y-1.5">
+                    <label>
+                        <span class="opacity-60 font-medium">PO #</span>
+                        <span class="text-red-400">&nbsp; *</span>
+                    </label>
+                    <div>
+                        <!-- formControlName="purchase_order_id"  -->
+                        <p-dropdown 
+                            [options]="purchaseOrderStore.purchaseOrder()"
+                            optionLabel="purchase_order_number"
+                            optionValue="purchase_order_id"
+                            placeholder="Select a Order" 
+                            appendTo="body"
+                            [filter]="true"
+                            [autofocusFilter]="false"
+                            [showClear]="true"
+                            [loading]="isPurchaseOrderLoading"
+                            (onChange)="onSelectPurchaseOrder($event.value)"
+                        />
+                    </div>
+                    <!-- <div class="text-sm text-red-400" *ngIf="purchaseOrderForm.get('purchase_order_number')?.invalid && submitted">
+                        This field is required.
+                    </div> -->
+                </fieldset>
+
+                <fieldset class="space-y-1.5">
+                    <label>
+                        <span class="opacity-60 font-medium">Incoming Date</span>
+                        <span class="text-red-400">&nbsp; *</span>
+                    </label>
+                    <div>
+                        <p-calendar 
+                            appendTo="body" 
+                        />
+                    </div>
+                    <!-- <div class="text-sm text-red-400" *ngIf="purchaseOrderForm.get('purchase_order_date')?.invalid && submitted">
+                        This field is required.
+                    </div> -->
+                </fieldset>
+
+            </div>
+
+        </form>
+    </div>
+
+
+</div>
+
+
+<p-dialog 
+    #purchaseOrderDialog 
+    header="Purchase Order" 
+    [(visible)]="isPurchaseOrderVisible" 
+    [modal]="true" 
+    [style]="{ width: '25rem' }"
+    [focusOnShow]="false"
+>
+
+        <span class="p-text-secondary block mb-5">Please click close after selecting items.</span>
+
+
+        <div *ngIf="!purchaseOrder">
+            No data found.
+        </div>
+
+        <div *ngIf="purchaseOrder">
+
+            <h1 class="font-bold text-xl mb-4">
+                {{ purchaseOrder.purchase_order_number || '-' }}
+            </h1>
+
+            <div *ngIf="purchaseOrder.purchase_order_item.length > 0">
+                <p-table 
+                    [value]="purchaseOrder.purchase_order_item" 
+                    [tableStyle]="{ 'min-width': '50rem' }"
+                    styleClass="p-datatable-gridlines"
+                >
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th style="width: 4rem"><p-tableHeaderCheckbox /></th>
+                            <th>Item</th>
+                            <th>Ordered Quantity</th>
+                            <th>Price</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-item>
+                        <tr>
+                            <td>
+                                <p-tableCheckbox [value]="item" />
+                            </td>
+
+                            <td>
+                                <div class="flex items-center gap-3">
+                                    <div class="h-[50px] w-[50px]">
+                                        <img 
+                                            [src]="imageBaseUrl + item.image_name" 
+                                            alt="image"
+                                            class="w-full h-full object-cover rounded-md"
+                                        >
+                                    </div>
+                                    <div>
+                                        <h1>{{ item.item_name || '-' }}</h1>
+                                        <div class="space-x-1.5 opacity-60">
+                                            <span>{{ item.brand_name || '-' }}</span>
+                                            <span>•</span>
+                                            <span>{{ item.category_name || '-' }}</span>
+                                            <span>•</span>
+                                            <span>{{ item.item_type_name || '-' }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                {{ (item.ordered_quantity || 0) | number }}
+                                <span>&nbsp; {{ item.uom_name || '-' }}</span>
+                            </td>
+                            <td>{{ (item.price || 0) | number }}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+
+
+        </div>
+       
+        <ng-template pTemplate="footer">
+  
+            <p-button 
+                icon="pi pi-times"
+                label="Close" 
+                (onClick)="isPurchaseOrderVisible = false" 
+              />
+        </ng-template>
+</p-dialog>

@@ -28,7 +28,7 @@ body, th, td {
     @apply text-sm 
 }
 
-button, input, .p-submenu-header, .p-menuitem, .p-dropdown-label {
+button, input, .p-submenu-header, .p-menuitem, .p-dropdown-label, .p-dropdown-item {
     @apply text-sm
 }
 
