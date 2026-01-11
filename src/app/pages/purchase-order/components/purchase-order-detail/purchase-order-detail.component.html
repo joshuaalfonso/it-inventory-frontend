@@ -96,7 +96,7 @@
                             </div>
                         </td>
                         <td>{{ item.employee_name }}</td>
-                        <td>{{ ((item.ordered_quantity || 0) | number) + ' ' + item.uom_name }}</td>
+                        <td>  {{ (item.delivered_quantity || 0) | number }}/{{ ((item.ordered_quantity || 0) | number) + ' ' + item.uom_name }}</td>
                         <td>{{ item.price }}</td>
                     </tr>
                 </ng-template>

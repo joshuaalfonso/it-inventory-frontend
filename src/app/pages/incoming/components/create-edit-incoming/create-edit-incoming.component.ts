@@ -14,6 +14,7 @@ import { IMAGE_BASE_URL } from '../../../../shared/constant/image';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { IncomingService } from '../../incoming.service';
+import { IncomingStore } from '../../store/incoming.store';
 
 
 @Component({
@@ -34,6 +35,7 @@ export class CreateEditIncomingComponent implements OnInit {
   purchaseOrderStore = inject(PurchaseOrderStore);
   purchaseOrderService = inject(PurchaseOrderService);
   incomingService = inject(IncomingService);
+  incomingStore = inject(IncomingStore);
   fb = inject(FormBuilder);
 
   purchaseOrder!: PurchaseOrderList;
@@ -181,13 +183,24 @@ export class CreateEditIncomingComponent implements OnInit {
     }
 
     console.log(data)
-    this.incomingService.createIncomingApi(data)
+    // this.incomingService.createIncomingApi(data)
+    this.incomingStore.createIncoming(data)
     .pipe(take(1)).subscribe({
       next: (response) => {
-        console.log(response)
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: response.message || 'Successfully created.'
+        })
+        this.goBack();
       },
-      error: (err) => {
-        console.error(err)
+      error: ({error}) => {
+        console.error(error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Success',
+          detail: error.message || 'Successfully created.'
+        })
       }
     })
 

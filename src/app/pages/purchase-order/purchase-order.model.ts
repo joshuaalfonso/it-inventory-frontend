@@ -43,5 +43,6 @@ export interface PurchaseOrderItemPost {
   item_id: number
   employee_id: number
   ordered_quantity: number
+  delivered_quantity: number
   price: number
 }
