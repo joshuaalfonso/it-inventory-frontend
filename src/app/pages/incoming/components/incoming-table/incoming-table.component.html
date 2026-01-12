@@ -56,6 +56,7 @@
                         icon="pi pi-ellipsis-h"
                         severity="secondary"
                         [text]="true"
+                        (click)="openMenu($event, item)"
                     />
                 </td>
             </tr>
@@ -63,4 +64,4 @@
     </p-table>
 </div>
 
-<!-- <p-menu #menu [model]="menus" [popup]="true" /> -->
+<p-menu #menu [model]="menus" [popup]="true" />

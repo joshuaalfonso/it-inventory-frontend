@@ -95,6 +95,12 @@ export const routes: Routes = [
                     .then(c => c.IncomingComponent)
             },
             {
+                path: 'incoming/:incoming_id',
+                loadComponent: () =>
+                import('./pages/incoming/components/incoming-detail/incoming-detail.component')
+                    .then(c => c.IncomingDetailComponent)
+            },
+            {
                 path: 'incoming/create-edit/:incoming_id',
                 loadComponent: () =>
                 import('./pages/incoming/components/create-edit-incoming/create-edit-incoming.component')

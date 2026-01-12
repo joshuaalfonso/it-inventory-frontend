@@ -29,12 +29,12 @@ export class IncomingService {
         )
     }
 
-    // getPurchaseOrderByIDApi(purchase_order_id: number) {
-    //     const params = new HttpParams().set('purchase_order_id', purchase_order_id)
-    //     return this.http.get<PurchaseOrderList>(
-    //         `${this.apiBaseUrl}${TABLE_NAME}/${purchase_order_id}`,
-    //     )
-    // }
+    getIncomingByIDApi(incoming_id: number) {
+        // const params = new HttpParams().set('purchase_order_id', purchase_order_id)
+        return this.http.get<IncomingList>(
+            `${this.apiBaseUrl}${TABLE_NAME}/${incoming_id}`,
+        )
+    }
 
     createIncomingApi(newItem: any) {
         return this.http.post<any>(
