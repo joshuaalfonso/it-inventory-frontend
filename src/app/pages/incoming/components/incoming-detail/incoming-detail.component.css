@@ -2,6 +2,8 @@
 
 
 
-tr {
-    @apply last:!border-b-0
+
+/* styles.css or global.css */
+:host ::ng-deep .p-datatable tbody tr:last-child {
+  border-bottom: none !important;
 }

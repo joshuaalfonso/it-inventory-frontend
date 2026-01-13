@@ -1,7 +1,12 @@
 
+<h1 class="text-xl font-semibold mb-8">Incoming</h1>
 
 
+<app-loading-spinner 
+    *ngIf="incomingStore.loading()"
+/>
 
 <app-incoming-table 
     [incoming]="incoming"
+    *ngIf="!incomingStore.loading()"
 />

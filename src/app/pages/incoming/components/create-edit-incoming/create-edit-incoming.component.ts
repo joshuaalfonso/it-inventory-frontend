@@ -117,6 +117,7 @@ export class CreateEditIncomingComponent implements OnInit {
       incoming_id: number;
       purchase_order_item_id: number;
       ordered_quantity: number;
+      delivered_quantity: number;
       received_quantity: number;
       item_id: number;
       item_name: string;
@@ -134,8 +135,9 @@ export class CreateEditIncomingComponent implements OnInit {
       ordered_quantity: [data?.ordered_quantity ?? 0],
       received_quantity: [
         data?.received_quantity ?? 0,
-        [Validators.required, Validators.min(1)],
+        [Validators.required, Validators.min(1), Validators.max((data?.ordered_quantity ?? 0) - (data?.delivered_quantity ?? 0))],
       ],
+      delivered_quantity: [data?.delivered_quantity ?? ''],
       item_id: [data?.item_id ?? ''],
       item_name: [data?.item_name ?? ''],
       image_name: [data?.image_name ?? ''],

@@ -37,7 +37,7 @@ export class IncomingDetailComponent implements OnInit {
     
 
     if (incomingIDNumber) {
-      this.isLoading = false;
+      this.isLoading = true;
       this.incomingService.getIncomingByIDApi(incomingIDNumber)
       .pipe(
         take(1),

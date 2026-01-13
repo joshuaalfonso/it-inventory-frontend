@@ -78,11 +78,12 @@
                         <tr>
                             <th>
                                 <span class="opacity-60">Item</span>
-                                <span class="text-red-400">&nbsp; *</span>
                             </th>
                             <th>
-                                <span class="opacity-60">Ordered Qty</span>
-                                <span class="text-red-400">&nbsp; *</span>
+                                <span class="opacity-60">Delivered Qty</span>
+                            </th>
+                             <th>
+                                <span class="opacity-60">Open Qty</span>
                             </th>
                             <th>
                                 <span class="opacity-60">Received Qty</span>
@@ -152,7 +153,15 @@
                             </td>
 
                             <td>
-                                {{ row.value.ordered_quantity }}
+                                 {{ (row.value.delivered_quantity || 0) | number }} 
+                                 /
+                                 {{ (row.value.ordered_quantity || 0) | number }}
+                                 &nbsp;
+                                 {{ row.value.uom_name || '-' }}
+                            </td>
+
+                            <td>
+                                {{ (row.value.ordered_quantity || 0) - (row.value.delivered_quantity || 0) }} 
                             </td>
 
                             <td>
@@ -169,6 +178,15 @@
                                     "
                                 >
                                     Must be greater than 0.
+                                </small>
+                                <small
+                                    class="text-red-400"
+                                    *ngIf="
+                                        row.get('received_quantity')?.hasError('max') &&
+                                        submitted
+                                    "
+                                >
+                                    Exceeds open quantity.
                                 </small>
                             </td>
 
@@ -328,8 +346,9 @@
                             <!-- <p-tableHeaderCheckbox /> -->
                             <th style="width: 4rem"></th>
                             <th>Item</th>
-                            <th>Ordered Quantity</th>
-                            <th>Price</th>
+                            <th>Ordered Qty</th>
+                            <th>Delivered Qty</th>
+                            <th>Open Qty</th>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-item>
@@ -363,7 +382,11 @@
                                 {{ (item.ordered_quantity || 0) | number }}
                                 <span>&nbsp; {{ item.uom_name || '-' }}</span>
                             </td>
-                            <td>{{ (item.price || 0) | number }}</td>
+                            <td>
+                                {{ (item.delivered_quantity || 0) | number }}
+                                <!-- <span>&nbsp; {{ item.uom_name || '-' }}</span> -->
+                            </td>
+                            <td>{{ (item.ordered_quantity || 0) - (item.delivered_quantity || 0) | number }}</td>
                         </tr>
                     </ng-template>
                 </p-table>

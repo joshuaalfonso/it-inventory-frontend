@@ -29,8 +29,9 @@
         <ng-template pTemplate="header">
             <tr>
                 <th>#</th>
+                <th>Incoming Date</th>
+                <th>Sample Code</th>
                 <th>PO #</th>
-                <th>PO Date</th>
                 <th>Total Quantity</th>
                 <th>Remarks</th>
                 <th>Created At</th>
@@ -40,12 +41,13 @@
         <ng-template pTemplate="body" let-item let-rowIndex="rowIndex">
             <tr>
                 <td>{{ rowIndex + 1 }}</td>
+                <td>{{ item.incoming_date | date }}</td>
+                <td>{{ item.sample_code || '-' }}</td>
                 <td>
                     <span class="font-semibold">
                         {{ item.purchase_order_number }}
                     </span>
                 </td>
-                <td>{{ item.incoming_date | date }}</td>
                 <td>{{ (item.total_quantity || 0) | number }}</td>
                 <td>{{ item.remarks || '-' }}</td>
                
