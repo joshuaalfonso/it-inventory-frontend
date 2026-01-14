@@ -6,6 +6,7 @@ export interface PurchaseOrderList {
     purchase_requisition_number: string
     delivery_date: string 
     total_quantity: number
+    total_delivered: number
     status: number
     created_at: string
     purchase_order_item: PurchaseOrderItemList[]

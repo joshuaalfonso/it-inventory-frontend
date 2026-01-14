@@ -10,17 +10,19 @@ import { finalize, take } from 'rxjs';
 import { PurchaseOrderList } from '../../../purchase-order/purchase-order.model';
 import { MessageService } from 'primeng/api';
 import { TableModule } from 'primeng/table';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 import { IMAGE_BASE_URL } from '../../../../shared/constant/image';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { IncomingService } from '../../incoming.service';
 import { IncomingStore } from '../../store/incoming.store';
+import { DividerModule } from 'primeng/divider';
 
 
 @Component({
   selector: 'app-create-edit-incoming',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, CalendarModule, DropdownModule, DialogModule, TableModule, InputNumberModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, CalendarModule, DropdownModule, DialogModule, TableModule, InputNumberModule, DividerModule, InputTextareaModule],
   templateUrl: './create-edit-incoming.component.html',
   styleUrl: './create-edit-incoming.component.css'
 })
@@ -157,6 +159,20 @@ export class CreateEditIncomingComponent implements OnInit {
     this.selectedIncomingRow.splice(index, 1)
   }
 
+  addItem() {
+    const purchaseOrderID = this.incomingForm.value.purchase_order_id;
+    if (!purchaseOrderID) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Invalid form',
+        detail: 'Please select PO #'
+      })
+      return
+    }
+
+    this.onSelectPurchaseOrder(purchaseOrderID);
+  }
+
   get totalQuantity() {
     let total = 0;
 
@@ -174,6 +190,16 @@ export class CreateEditIncomingComponent implements OnInit {
     this.submitted = true;
 
     if (!this.incomingForm.valid) return
+
+    if (this.incomingItems.length === 0) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Invalid form',
+        detail: 'Must have at least one item'
+      })
+      return
+    }
+
     const formValue = this.incomingForm.value;
     
     const data = {

@@ -35,6 +35,7 @@
                 <th>PR #</th>
                 <th>Delivery Date</th>
                 <th>Total Quantity</th>
+                <th>Progress</th>
                 <th>Status</th>
                 <th>Created At</th>
                 <th></th>
@@ -51,7 +52,23 @@
                 <td>{{ item.purchase_order_date | date }}</td>
                 <td>{{ item.purchase_requisition_number || '-' }}</td>
                 <td>{{ (item.delivery_date | date) || '-' }}</td>
-                <td>{{ (item.total_quantity || 0) | number }}</td>
+                <td> 
+                    {{ (item.total_delivered || 0) | number }}
+                    /
+                   {{ (item.total_quantity || 0) | number }}
+                </td>
+                <td>
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-[100px]">
+                            <p-progressBar  
+                                [style]="{ height: '6px' }"
+                                [value]="numberService.getPercentage(item.total_delivered, item.total_quantity)"
+                                [showValue]="false"
+                            />
+                        </div>
+                        <h4>{{ numberService.getPercentage(item.total_delivered, item.total_quantity) }}%</h4>
+                    </div>
+                </td>
                 <td>
                     <span 
                         class="bg-yellow-500/5 text-yellow-500 text-xs font-medium capitalize px-3 py-0.5 rounded-md"

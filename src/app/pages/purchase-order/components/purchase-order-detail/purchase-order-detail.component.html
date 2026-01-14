@@ -52,7 +52,7 @@
                     icon="pi pi-pencil"
                     label="Edit" 
                     [routerLink]="'/purchase-order/create-edit/' + purchaseOrder.purchase_order_id"
-                    *ngIf="purchaseOrder.status === 0"
+                    *ngIf="purchaseOrder.status === 0 && purchaseOrder.total_delivered === 0"
                 />
             </div>
         </div>
@@ -84,7 +84,7 @@
                                     >
                                 </div>
                                 <div>
-                                    <h1 class="font-semibold">{{ item.item_name }}</h1>
+                                    <h1 class="font-semibold">{{ item.item_name }} </h1>
                                     <div class="space-x-2">
                                         <span class="text-xs opacity-60">{{ item.brand_name }}</span>
                                         <span class="text-xs opacity-60">•</span>
@@ -96,7 +96,13 @@
                             </div>
                         </td>
                         <td>{{ item.employee_name }}</td>
-                        <td>  {{ (item.delivered_quantity || 0) | number }}/{{ ((item.ordered_quantity || 0) | number) + ' ' + item.uom_name }}</td>
+                        <td>  
+                            <span [ngClass]="getRowSeverity(item.delivered_quantity, item.ordered_quantity)">
+                                {{ (item.delivered_quantity || 0) | number }}
+                            </span>
+                            /
+                            {{ ((item.ordered_quantity || 0) | number) + ' ' + item.uom_name }}
+                        </td>
                         <td>{{ item.price }}</td>
                     </tr>
                 </ng-template>

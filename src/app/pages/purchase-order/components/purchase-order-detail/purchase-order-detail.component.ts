@@ -58,4 +58,21 @@ export class PurchaseOrderDetailComponent implements OnInit {
     this.location.back();
   }
 
+  getRowSeverity(delivered: number, ordered: number) {
+
+    const safeDelivered = delivered || 0;
+    const safeOrdered = ordered || 0;
+
+    if (safeDelivered === safeOrdered) {
+      return 'text-green-400'
+    } else if (safeDelivered < safeOrdered) {
+      return 'text-yellow-400'
+    } else if (safeDelivered > safeOrdered) {
+      return 'text-red-400'
+    }
+
+    return null
+
+  }
+
 }

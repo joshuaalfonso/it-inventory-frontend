@@ -7,16 +7,18 @@ import { Menu, MenuModule } from 'primeng/menu';
 import { InputTextModule } from 'primeng/inputtext';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
+import { ProgressBarModule } from 'primeng/progressbar';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { Router, RouterModule } from '@angular/router';
 import { PurchaseOrderStore } from '../../store/purchase-order.store';
 import { take } from 'rxjs';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { NumberService } from '../../../../shared/service/number.service';
 
 @Component({
   selector: 'app-purchase-order-table',
   standalone: true,
-  imports: [CommonModule, RouterModule ,TableModule, ButtonModule, MenuModule, InputTextModule, IconFieldModule, InputIconModule, ConfirmDialogModule],
+  imports: [CommonModule, RouterModule ,TableModule, ButtonModule, MenuModule, InputTextModule, IconFieldModule, InputIconModule, ConfirmDialogModule, ProgressBarModule],
   templateUrl: './purchase-order-table.component.html',
   styleUrl: './purchase-order-table.component.css'
 })
@@ -35,6 +37,7 @@ export class PurchaseOrderTableComponent {
   purchaseOrderStore = inject(PurchaseOrderStore);
   messageService = inject(MessageService);
   confirmationService = inject(ConfirmationService);
+  numberService = inject(NumberService)
 
   // [routerLink]="['/purchase-order/create-edit', 0]" 
 

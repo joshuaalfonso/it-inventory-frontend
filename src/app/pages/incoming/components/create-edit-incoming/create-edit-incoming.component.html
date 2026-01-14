@@ -15,7 +15,13 @@
         <h1 class="text-xl font-medium mb-4">Incoming Form</h1>
         <span class="opacity-60">Fields with * are required.</span>
 
-        <form [formGroup]="incomingForm" class="p-fluid space-y-6 mt-6">
+        <form [formGroup]="incomingForm" class="p-fluid space-y-8 mt-6">
+
+            <div>
+                <p-divider align="left" type="dashed">
+                    <b>Basic Details</b>
+                </p-divider>
+            </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
@@ -36,8 +42,8 @@
                             [autofocusFilter]="false"
                             [showClear]="true"
                             [loading]="isPurchaseOrderLoading"
-                            (onChange)="onSelectPurchaseOrder($event.value)"
-                        />
+                            />
+                            <!-- (onChange)="onSelectPurchaseOrder($event.value)" -->
                     </div>
                     <div class="text-sm text-red-400" *ngIf="incomingForm.get('purchase_order_id')?.hasError('min') && submitted">
                         This field is required.
@@ -53,6 +59,9 @@
                         <p-calendar 
                             appendTo="body" 
                             formControlName="incoming_date" 
+                            [readonlyInput]="true"
+                            [showClear]="true"
+                            appendTo="body"
                         />
                     </div>
                     <div class="text-sm text-red-400" *ngIf="incomingForm.get('incoming_date')?.invalid && submitted">
@@ -66,8 +75,33 @@
 
             </div>
 
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                 <fieldset class="space-y-1.5">
+                    <label>
+                        <span class="opacity-60 font-medium">Remarks</span>
+                        <span class="text-xs opacity-80">&nbsp; (Optional)</span>
+                    </label>
+                    <textarea 
+                        rows="2" 
+                        cols="30" 
+                        pInputTextarea 
+                        formControlName="remarks"
+                    >
+                </textarea>
+                    <div class="text-sm text-red-400" *ngIf="incomingForm.get('incoming_date')?.invalid && submitted">
+                        This field is required.
+                    </div>
+                </fieldset>
+            </div>
+
+            <div>
+                <p-divider align="left" type="dashed">
+                    <b>Item Details</b>
+                </p-divider>
+            </div>
+
             <fieldset class="space-y-4">
-                    <h1 class="opacity-60 font-medium mb-4">Item Detail</h1>
+                    <!-- <h1 class="opacity-60 font-medium mb-4">Item Detail</h1> -->
                     <p-table
                         [value]="incomingItems.controls"
                         responsiveLayout="scroll"
@@ -278,7 +312,7 @@
                     </div>
 
                     <div
-                        class="grid place-items-center my-5" 
+                        class="grid place-items-center my-5 space-y-2" 
                         *ngIf="incomingItems.length == 0"
                     >
 
@@ -289,8 +323,15 @@
                             />
                         </div>
 
-                        <p class="opacity-60">No Items yet</p>
-                        <p class="opacity-60">Start adding by selecting PO</p>
+                        <h1 class="text-base font-semibold">No Items yet</h1>
+                        <!-- <p class="opacity-60">Start adding by selecting PO</p> -->
+
+                        <button
+                            class="bg-teal-400/10 text-teal-400 font-medium px-3 py-1 rounded-md"
+                            (click)="addItem()"
+                        >
+                            Add Item
+                        </button>
 
                     </div>
                         
