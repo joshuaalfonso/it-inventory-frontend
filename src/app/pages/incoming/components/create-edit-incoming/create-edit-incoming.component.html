@@ -102,200 +102,348 @@
 
             <fieldset class="space-y-4">
                     <!-- <h1 class="opacity-60 font-medium mb-4">Item Detail</h1> -->
-                    <p-table
+                    <!-- <p-table
                         [value]="incomingItems.controls"
                         responsiveLayout="scroll"
+                        [expandedRowKeys]="expandedRows"
+                        dataKey="purchase_order_item_id"
                         *ngIf="incomingItems.length > 0"
                     >
 
                         <ng-template pTemplate="header">
-                        <tr>
-                            <th>
-                                <span class="opacity-60">Item</span>
-                            </th>
-                            <th>
-                                <span class="opacity-60">Delivered Qty</span>
-                            </th>
-                             <th>
-                                <span class="opacity-60">Open Qty</span>
-                            </th>
-                            <th>
-                                <span class="opacity-60">Received Qty</span>
-                                <span class="text-red-400">&nbsp; *</span>
-                            </th>
-                            <!-- <th>
-                                <span class="opacity-60">Employee</span>
-                                <span class="text-red-400">&nbsp; *</span>
-                            </th>
-                            <th>
-                                <span class="opacity-60">Ordered Qty</span>
-                                <span class="text-red-400">&nbsp; *</span>
-                            </th>
-                            <th>
-                                <span class="opacity-60">Price</span>
-                                <span class="text-red-400">&nbsp; *</span>
-                            </th> -->
-                            <th class="opacity-60">Action</th>
-                        </tr>
+                            <tr>
+                                <th></th>
+                                <th>
+                                    <span class="opacity-60">Item</span>
+                                </th>
+                                <th>
+                                    <span class="opacity-60">Delivered Qty</span>
+                                </th>
+                                <th>
+                                    <span class="opacity-60">Open Qty</span>
+                                </th>
+                                <th>
+                                    <span class="opacity-60">Received Qty</span>
+                                    <span class="text-red-400">&nbsp; *</span>
+                                </th>
+
+                                <th class="opacity-60">Action</th>
+                                <th></th>
+                            </tr>
                         </ng-template>
 
-                        <ng-template pTemplate="body" let-row let-i="rowIndex">
-                        <tr [formGroup]="row">
+                        <ng-template pTemplate="body" let-row let-i="rowIndex" let-expanded="expanded">
+                            <tr [formGroup]="row">
 
-                            <td>
-                                <!-- <div>
-                                    <p-dropdown 
-                                        formControlName="item_id" 
-                                        [options]="itemStore.item()"
-                                        optionLabel="item_name"
-                                        optionValue="item_id"
-                                        placeholder="Select a Item" 
-                                        appendTo="body"
-                                        [filter]="true"
-                                        [autofocusFilter]="false"
-                                    />
-                                </div> -->
-                                <!-- {{ row.value.item_name }} -->
-                                <!-- <small
-                                    class="text-red-400"
-                                    *ngIf="
-                                        row.get('item_id')?.hasError('required') &&
-                                        submitted
-                                    "
-                                >
-                                    This field is required.
-                                </small> -->
-                                <div class="flex items-center gap-3">
-                                    <div class="h-[50px] w-[50px]">
-                                        <img 
-                                            [src]="imageBaseUrl + row.value.image_name" 
-                                            alt="image"
-                                            class="w-full h-full object-cover rounded-md"
-                                        >
-                                    </div>
-                                    <div>
-                                        <h1>{{ row.value.item_name || '-' }}</h1>
-                                        <div class="space-x-1.5 opacity-60">
-                                            <span>{{ row.value.brand_name || '-' }}</span>
-                                            <span>•</span>
-                                            <span>{{ row.value.category_name || '-' }}</span>
-                                            <span>•</span>
-                                            <span>{{ row.value.item_type_name || '-' }}</span>
+                                <td>
+                                    <p-button type="button" pRipple [pRowToggler]="row" [text]="true" [rounded]="true" [plain]="true" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" />
+                                </td>
+                                <td>
+                                    <div class="flex items-center gap-3">
+                                        <div class="h-[50px] w-[50px]">
+                                            <img 
+                                                [src]="imageBaseUrl + row.value.image_name" 
+                                                alt="image"
+                                                class="w-full h-full object-cover rounded-md"
+                                            >
+                                        </div>
+                                        <div>
+                                            <h1>{{ row.value.item_name || '-' }}</h1>
+                                            <div class="space-x-1.5 opacity-60">
+                                                <span>{{ row.value.brand_name || '-' }}</span>
+                                                <span>•</span>
+                                                <span>{{ row.value.category_name || '-' }}</span>
+                                                <span>•</span>
+                                                <span>{{ row.value.item_type_name || '-' }}</span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </td>
+                                </td>
 
-                            <td>
-                                 {{ (row.value.delivered_quantity || 0) | number }} 
-                                 /
-                                 {{ (row.value.ordered_quantity || 0) | number }}
-                                 &nbsp;
-                                 {{ row.value.uom_name || '-' }}
-                            </td>
+                                <td>
+                                    {{ (row.value.delivered_quantity || 0) | number }} 
+                                    /
+                                    {{ (row.value.ordered_quantity || 0) | number }}
+                                    &nbsp;
+                                    {{ row.value.uom_name || '-' }}
+                                </td>
 
-                            <td>
-                                {{ (row.value.ordered_quantity || 0) - (row.value.delivered_quantity || 0) }} 
-                            </td>
+                                <td>
+                                    {{ (row.value.ordered_quantity || 0) - (row.value.delivered_quantity || 0) }} 
+                                </td>
 
-                            <td>
-                                <p-inputNumber
-                                    formControlName="received_quantity"
-                                    [min]="0"
-                                    suffix=" {{ row.value.uom_name }}"
-                                ></p-inputNumber>
-                                <small
-                                    class="text-red-400"
-                                    *ngIf="
-                                        row.get('received_quantity')?.hasError('min') &&
-                                        submitted
-                                    "
-                                >
-                                    Must be greater than 0.
-                                </small>
-                                <small
-                                    class="text-red-400"
-                                    *ngIf="
-                                        row.get('received_quantity')?.hasError('max') &&
-                                        submitted
-                                    "
-                                >
-                                    Exceeds open quantity.
-                                </small>
-                            </td>
+                                <td>
+                                    <p-inputNumber
+                                        formControlName="received_quantity"
+                                        [min]="0"
+                                        suffix=" {{ row.value.uom_name }}"
+                                    ></p-inputNumber>
+                                    <small
+                                        class="text-red-400"
+                                        *ngIf="
+                                            row.get('received_quantity')?.hasError('min') &&
+                                            submitted
+                                        "
+                                    >
+                                        Must be greater than 0.
+                                    </small>
+                                    <small
+                                        class="text-red-400"
+                                        *ngIf="
+                                            row.get('received_quantity')?.hasError('max') &&
+                                            submitted
+                                        "
+                                    >
+                                        Exceeds open quantity.
+                                    </small>
+                                </td>
 
-                            <!-- <td>
-                                <div>
-                                    <p-dropdown 
-                                        formControlName="employee_id" 
-                                        [options]="employeeStore.employee()"
-                                        optionLabel="employee_name"
-                                        optionValue="employee_id"
-                                        placeholder="Select a Employee" 
-                                        appendTo="body"
-                                        [filter]="true"
-                                        [autofocusFilter]="false"
+                                <td>
+                            
+                                    <p-button 
+                                        icon="pi pi-times"
+                                        [text]="true"
+                                        severity="danger"
+                                        (click)="removeRow(i)"
                                     />
+                                </td>
+
+                                <td>
+                                    <div *ngIf="row.get('item_type_name')?.value === 'serialized'">
+
+                                        <div formArrayName="serial_items">
+
+                                        <div
+                                            *ngFor="let s of getSerialItems(i).controls; let j = index"
+                                            [formGroupName]="j"
+                                            class="p-mb-2">
+
+                                            <input
+                                            pInputText
+                                            formControlName="serial_number"
+                                            placeholder="Serial Number" />
+
+                                        </div>
+
+                                        </div>
+
+                                        <button
+                                            pButton
+                                            type="button"
+                                            icon="pi pi-plus"
+                                            label="Add Serial"
+                                            class="p-mt-2"
+                                            (click)="addSerialItem(i)">
+                                        </button>
+
+                                    </div>
+                                </td>
+
+                            </tr>
+                        </ng-template>
+
+                        <ng-template pTemplate="rowexpansion" let-row let-i="rowIndex">
+                        <tr>
+                            <td colspan="7">
+                                <div 
+                                    [formGroup]="row" 
+                                    class="flex flex-col items-center justify-end"
+                                    *ngIf="row.get('item_type_name')?.value === 'serialized'"
+                                >
+                                    <div formArrayName="serial_items">
+                                        <div
+                                            *ngFor="let s of getSerialItems(i).controls; let j = index"
+                                            [formGroupName]="j"
+                                            class="p-mb-2"
+                                        >
+                                            <input
+                                            pInputText
+                                            formControlName="serial_number"
+                                            placeholder="Serial Number"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <button
+                                        pButton
+                                        type="button"
+                                        icon="pi pi-plus"
+                                        label="Add Serial"
+                                        class="p-mt-2"
+                                        (click)="addSerialItem(i)"
+                                    ></button>
                                 </div>
-                                <small
-                                    class="text-red-400"
-                                    *ngIf="
-                                        row.get('employee_id')?.hasError('required') &&
-                                        submitted
-                                    "
-                                >
-                                    This field is required.
-                                </small>
                             </td>
-
-                            <td>
-                                <p-inputNumber
-                                    formControlName="ordered_quantity"
-                                    [min]="1"
-                                ></p-inputNumber>
-                                <small
-                                    class="text-red-400"
-                                    *ngIf="
-                                        row.get('ordered_quantity')?.hasError('min') &&
-                                        submitted
-                                    "
-                                >
-                                    Must be greater than 0.
-                                </small>
-                            </td>
-
-                            <td>
-                                <p-inputNumber
-                                    formControlName="price"
-                                    [min]="0"
-                                    mode="currency"
-                                    currency="PHP"
-                                ></p-inputNumber>
-                                <small
-                                    class="text-red-400"
-                                    *ngIf="
-                                        row.get('price')?.hasError('min') &&
-                                        submitted
-                                    "
-                                >
-                                    Must be greater than 0.
-                                </small>
-                            </td> -->
-
-                            <td>
-                        
-                                <p-button 
-                                    icon="pi pi-times"
-                                    [text]="true"
-                                    severity="danger"
-                                    (click)="removeRow(i)"
-                                />
-                            </td>
-
                         </tr>
                         </ng-template>
 
-                    </p-table>
+
+
+                    </p-table> -->
+
+                    <div class="flex flex-col gap-4" *ngIf="incomingItems.length > 0">
+
+                        <!-- Header -->
+                        <div
+                            class="grid grid-cols-[40px_2fr_1fr_1fr_1fr_80px] gap-3 px-3 py-2 text-sm opacity-60 font-medium"
+                        >
+                            <div></div>
+                            <div>Item</div>
+                            <div>Delivered Qty</div>
+                            <div>Open Qty</div>
+                            <div>
+                            Received Qty
+                            <span class="text-red-400">*</span>
+                            </div>
+                            <div>Action</div> 
+                        </div>
+
+                        <!-- Rows -->
+                        <div
+                            class="rounded-md border border-[var(--surface-border)]"
+                            *ngFor="let row of incomingItemGroups; let i = index"
+                        >
+                            <div
+                                class="grid grid-cols-[40px_2fr_1fr_1fr_1fr_80px] gap-6 items-center
+                                    border-b border-[var(--surface-border)] px-3 py-3 "
+                                [formGroup]="row"
+                            >
+                                <!-- Expand -->
+                                <div class="grid place-items-center">
+                                    <button
+                                        type="button"
+                                        class="text-gray-500 hover:text-gray-700"
+                                        (click)="expandedRows[i] = !expandedRows[i]"
+                                    >
+                                        <i
+                                            class="pi"
+                                            [ngClass]="expandedRows[i] ? 'pi-chevron-down' : 'pi-chevron-right'"
+                                        ></i>
+                                    </button>
+                                </div>
+
+                                <!-- Item -->
+                                <div class="flex items-center gap-3">
+                                    <img
+                                    [src]="imageBaseUrl + row.value.image_name"
+                                    class="w-[50px] h-[50px] rounded-md object-cover"
+                                    />
+                                    <div>
+                                    <h1 class="font-medium">
+                                        {{ row.value.item_name || '-' }}
+                                    </h1>
+                                    <div class="text-xs opacity-60 space-x-1">
+                                        <span>{{ row.value.brand_name || '-' }}</span>
+                                        <span>•</span>
+                                        <span>{{ row.value.category_name || '-' }}</span>
+                                        <span>•</span>
+                                        <span>{{ row.value.item_type_name || '-' }}</span>
+                                    </div>
+                                    </div>
+                                </div>
+
+                                <!-- Delivered -->
+                                <div class="text-sm">
+                                    {{ row.value.delivered_quantity || 0 }}
+                                    /
+                                    {{ row.value.ordered_quantity || 0 }}
+                                    {{ row.value.uom_name }}
+                                </div>
+
+                                <!-- Open -->
+                                <div class="text-sm">
+                                    {{ (row.value.ordered_quantity || 0) - (row.value.delivered_quantity || 0) }}
+                                </div>
+
+                                <!-- Received -->
+                                <div>
+                                    <p-inputNumber
+                                        formControlName="received_quantity"
+                                        [min]="0"
+                                        suffix=" {{ row.value.uom_name }}"
+                                        class="w-full"
+                                    ></p-inputNumber>
+
+                                    <small
+                                        class="text-red-400 text-xs"
+                                        *ngIf="row.get('received_quantity')?.hasError('min') && submitted"
+                                    >
+                                        Must be greater than 0
+                                    </small>
+
+                                    <small
+                                        class="text-red-400 text-xs"
+                                        *ngIf="row.get('received_quantity')?.hasError('max') && submitted"
+                                    >
+                                        Exceeds open quantity
+                                    </small>
+                                </div>
+
+                                <!-- Action -->
+                                <div class="flex justify-center">
+                                    <p-button
+                                    icon="pi pi-times"
+                                    text
+                                    severity="danger"
+                                    (click)="removeRow(i)"
+                                    ></p-button>
+                                </div>
+                            </div>
+
+                            <!-- Expanded Row -->
+                            <div
+                                *ngIf="expandedRows[i]"
+                                class=" rounded-md px-16 py-4"
+                                [formGroup]="row"
+                            >
+
+                                <div *ngIf="row.get('item_type_name')?.value === 'serialized'">
+
+                                     <!-- <hr class="border border-[var(--surface-border)]"> -->
+
+                                     <div class="flex gap-3">
+                                        <div class="flex-1">
+                                            <input 
+                                                type="text" 
+                                                pInputText 
+                                                [(ngModel)]="serialNumber" 
+                                                [ngModelOptions]="{standalone: true}"
+                                                placeholder="Serial Number" 
+                                                class="w-full" 
+                                            />
+                                        </div>
+                                        <p-button icon="pi pi-plus" label="add" />
+                                        <p-button icon="pi pi-camera" label="Scan" severity="secondary" />
+                                     </div>
+
+                                    <div formArrayName="serial_items" class="space-y-2">
+                                        <div
+                                            *ngFor="let s of getSerialItems(i).controls; let j = index"
+                                            [formGroupName]="j"
+                                        >
+
+                                            <!-- <input type="text" pInputText formControlName="serial_number" placeholder="Serial Number" class="w-full" /> -->
+                                             <span>{{ s.value.serial_number }}</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- <div class="flex items-center justify-end">
+                                        <p-button
+                                            type="button"
+                                            icon="pi pi-plus"
+                                            label="Add Serial"
+                                            class="mt-3"
+                                            (click)="addSerialItem(i)"
+                                        ></p-button>
+                                    </div> -->
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                        </div>
+
 
 
                     <div class="flex items-center justify-end">
@@ -328,7 +476,7 @@
 
                         <button
                             class="bg-teal-400/10 text-teal-400 font-medium px-3 py-1 rounded-md"
-                            (click)="addItem()"
+                            (click)="addItem()" 
                         >
                             Add Item
                         </button>

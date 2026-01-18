@@ -12,17 +12,18 @@ import { MessageService } from 'primeng/api';
 import { TableModule } from 'primeng/table';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { IMAGE_BASE_URL } from '../../../../shared/constant/image';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { IncomingService } from '../../incoming.service';
 import { IncomingStore } from '../../store/incoming.store';
 import { DividerModule } from 'primeng/divider';
+import { InputTextModule } from 'primeng/inputtext';
 
 
 @Component({
   selector: 'app-create-edit-incoming',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, CalendarModule, DropdownModule, DialogModule, TableModule, InputNumberModule, DividerModule, InputTextareaModule],
+  imports: [CommonModule, FormsModule,ReactiveFormsModule, RouterModule, CalendarModule, DropdownModule, DialogModule, TableModule, InputNumberModule, DividerModule, InputTextareaModule, InputTextModule],
   templateUrl: './create-edit-incoming.component.html',
   styleUrl: './create-edit-incoming.component.css'
 })
@@ -58,6 +59,10 @@ export class CreateEditIncomingComponent implements OnInit {
 
   submitted: boolean = false;
   isWorking: boolean = false;
+
+  expandedRows: { [key: number]: boolean } = {};
+
+  serialNumber!: string ;
 
   ngOnInit(): void {
     this.purchaseOrderStore.loadPurchaseOrder();
@@ -98,10 +103,43 @@ export class CreateEditIncomingComponent implements OnInit {
       return this.incomingForm.get('incoming_item') as FormArray;
   }
 
+  get incomingItemGroups(): FormGroup[] {
+    return this.incomingItems.controls as FormGroup[];
+  }
+
+
+  getSerialItems(index: number): FormArray {
+    return this.incomingItems
+      .at(index)
+      .get('serial_items') as FormArray;
+  }
+
+  addSerialItem(incomingIndex: number) {
+    this.getSerialItems(incomingIndex).push(
+      this.createSerialItem()
+    );
+  }
+
+  // Remove serial item
+  removeSerialItem(rowIndex: number, serialIndex: number) {
+    this.getSerialItems(rowIndex).removeAt(serialIndex);
+  }
+
+
   onSelectItem(event: any) {
     // this.selectedIncomingRow.push(event);
+    // const index = this.incomingItems.value.length;
+
+    const serial_item = event.item_type_name === 'serialized' ? [] : [];
+
     console.log(event)
-    this.incomingItems.push(this.createIncomingItem(event))
+    this.incomingItems.push(this.createIncomingItem({
+      ...event,
+      serial_items: serial_item
+    }))
+    const index = this.incomingItems.value.findIndex((item: any) => item.purchase_order_item_id === event.purchase_order_item_id);
+    this.expandedRows[index] = event.item_type_name === 'serialized' ? true : false;
+    console.log(this.expandedRows)
   }
 
   onRemoveItem(event: any) {
@@ -128,6 +166,7 @@ export class CreateEditIncomingComponent implements OnInit {
       category_name: string;
       item_type_name: string;
       uom_name: string;
+      serial_items: { item_id: number; serial_number: string }[];
     }>
   ): FormGroup {
     return this.fb.group({
@@ -147,8 +186,19 @@ export class CreateEditIncomingComponent implements OnInit {
       category_name: [data?.category_name ?? ''],
       item_type_name: [data?.item_type_name ?? ''],
       uom_name: [data?.uom_name ?? ''],
+      serial_items: this.fb.array(
+        (data?.serial_items ?? []).map(s => this.createSerialItem(s))
+      ),
     });
   }
+
+  createSerialItem(data?: Partial<{ item_id: number; serial_number: string }>): FormGroup {
+    return this.fb.group({
+      item_id: [data?.item_id ?? 0, Validators.required],
+      serial_number: [data?.serial_number ?? '', Validators.required],
+    });
+  }
+
 
   addRow() {
     this.incomingItems.push(this.createIncomingItem());
@@ -210,7 +260,8 @@ export class CreateEditIncomingComponent implements OnInit {
       incoming_item: formValue.incoming_item as any[]
     }
 
-    console.log(data)
+    console.log(data) 
+    return
     // this.incomingService.createIncomingApi(data)
     this.incomingStore.createIncoming(data)
     .pipe(take(1)).subscribe({

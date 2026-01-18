@@ -55,6 +55,7 @@
                     [outlined]="true"
                     severity="secondary" 
                 />
+                <h2 class="text-base font-semibold">{{ incoming.purchase_order_number || '-' }}</h2>
             </div>
         </div>
 
@@ -105,6 +106,10 @@
         </div>
 
         <div class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2">
+                <h1 class="opacity-60">PO #</h1>
+                <span>{{ incoming.purchase_order_number || '-' }}</span>
+            </div>
             <div class="grid grid-cols-1 md:grid-cols-2">
                 <h1 class="opacity-60">Remarks</h1>
                 <span>{{ incoming.remarks || '-' }}</span>

@@ -97,7 +97,7 @@
                         </td>
                         <td>{{ item.employee_name }}</td>
                         <td>  
-                            <span [ngClass]="getRowSeverity(item.delivered_quantity, item.ordered_quantity)">
+                            <span [ngClass]="getRowSeverity(item.delivered_quantity, item.ordered_quantity)" class="font-semibold">
                                 {{ (item.delivered_quantity || 0) | number }}
                             </span>
                             /
