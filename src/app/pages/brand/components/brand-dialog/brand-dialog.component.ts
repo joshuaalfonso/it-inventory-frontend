@@ -9,6 +9,7 @@ import { BrandStore } from '../../store/brand.store';
 import { finalize, take } from 'rxjs';
 import { MessageService } from 'primeng/api';
 import { BrandPost } from '../../brand.model';
+import { ToastService } from '../../../../shared/service/toast.service';
 
 
 @Component({
@@ -35,8 +36,10 @@ export class BrandDialogComponent {
   isWorking: boolean = false;
 
   constructor(
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private toastService: ToastService
   ) {
+
     effect(() => {
       const selectedItem = this.dialogStore.selectedItem();
       if (selectedItem) {
@@ -50,9 +53,11 @@ export class BrandDialogComponent {
         })
       }
     })
+    
   }
 
   onSubmit() {
+
     this.submitted = true;
     if (!this.brandForm.valid) return
 
@@ -63,11 +68,7 @@ export class BrandDialogComponent {
       formValue.brand_id === selectedItem.brand_id &&
       formValue.brand_name === selectedItem.brand_name 
     )) {
-      this.messageService.add({
-        severity: 'warn', 
-        summary: 'Warning', 
-        detail: 'No changes made.' 
-      })
+      this.toastService.warn('No changes made')
       return
     }
 
@@ -94,25 +95,17 @@ export class BrandDialogComponent {
     ).subscribe({
 
       next: (response) => {
-        this.messageService.add({ 
-          severity: 'success', 
-          summary: 'Success', 
-          detail: response.message || 'Successfully created!' 
-        });
+        this.toastService.success(response?.message || 'Successfully created!' );
         this.onClose();
       },
 
-      error: (error) => {
+      error: ({error}) => {
         console.error(error);
-        this.messageService.add({ 
-          severity: 'error', 
-          summary: 'Error', 
-          detail: error.error?.message || 'Something went wrong.',
-          life: 5000
-        });
+        this.toastService.error(error?.message || 'Something went wrong!' )
       }
       
-    })
+    });
+
   }
 
   updateBrand(newItem: BrandPost) {
@@ -125,24 +118,13 @@ export class BrandDialogComponent {
     ).subscribe({
 
       next: (response: any) => {
-        this.messageService.add({ 
-          severity: 'success', 
-          summary: 'Success', 
-          detail: response.message || 'Successfully updated!' 
-        });
+        this.toastService.success(response.message || 'Successfully updated!');
         this.onClose();
-
       },
 
-      error: (error: any) => {
-
+      error: ({error}) => {
         console.error(error);
-        this.messageService.add({ 
-          severity: 'error', 
-          summary: 'Error', 
-          detail: error.error?.message || 'Something went wrong.',
-          life: 5000
-        });
+        this.toastService.error(error.error?.message || 'Something went wrong.')
 
       }
 

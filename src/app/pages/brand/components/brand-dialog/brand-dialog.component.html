@@ -41,6 +41,7 @@
         <p-button 
             label="Create" 
             [loading]="isWorking"
+            [disabled]="!brandForm.dirty"
             (onClick)="onSubmit()"
         />
     </ng-template>

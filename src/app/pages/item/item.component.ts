@@ -51,7 +51,7 @@ export class ItemComponent implements OnInit {
 
   ngOnInit(): void {
     this.itemStore.loadItem();
-    this.brandStore.loadBrand();
+    this.brandStore.loadBrands();
     this.categoryStore.loadCategory();
     this.itemTypeStore.loadItemType();
     this.unitOfMeasureStore.loadUnitOfMeasure();

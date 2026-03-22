@@ -17,7 +17,6 @@ export class BrandService {
 
     private apiBaseUrl = environment.apiUrl;
 
-
     constructor(
         private http: HttpClient
     ) {}

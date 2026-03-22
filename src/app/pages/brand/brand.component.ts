@@ -24,12 +24,11 @@ export class BrandComponent implements OnInit {
   brandStore = inject(BrandStore);
 
   constructor(
-    
   ) {}
 
   ngOnInit(): void { 
-    this.brandStore.loadBrand();
-    this.brandStore.loadBrands();
+    // this.brandStore.loadBrand();
+    this.brandStore.loadBrands().subscribe()
   }
 
 }
