@@ -10,7 +10,7 @@ export interface BrandState {
     error: null | string;
 }
 
-export const BrandIninitialState = {
+export const BrandInitialState = {
     brand: [],
     loading: false,
     error: null

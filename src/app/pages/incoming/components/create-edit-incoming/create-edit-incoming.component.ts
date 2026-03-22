@@ -114,11 +114,36 @@ export class CreateEditIncomingComponent implements OnInit {
       .get('serial_items') as FormArray;
   }
 
-  addSerialItem(incomingIndex: number) {
-    this.getSerialItems(incomingIndex).push(
-      this.createSerialItem()
+  addSerialItem(incomingIndex: number, row: any) {
+
+    if (!this.serialNumber) return;
+
+    const serials = this.getSerialItems(incomingIndex);
+
+     serials.push(
+      this.createSerialItem({
+        item_id: row.item_id,
+        serial_number: this.serialNumber
+      })
     );
+
+    // 🔑 auto-sync quantity
+    this.updateReceivedQuantityFromSerials(incomingIndex);
+
+    // this.getSerialItems(incomingIndex).push(
+    //   this.createSerialItem({item_id: row.item_id, serial_number: this.serialNumber})
+    // );
+    this.serialNumber = '';
   }
+
+  updateReceivedQuantityFromSerials(index: number) {
+    const itemGroup = this.incomingItems.at(index) as FormGroup;
+    const serials = itemGroup.get('serial_items') as FormArray;
+
+    itemGroup.get('received_quantity')
+      ?.setValue(serials.length, { emitEvent: false });
+  }
+
 
   // Remove serial item
   removeSerialItem(rowIndex: number, serialIndex: number) {
@@ -175,7 +200,7 @@ export class CreateEditIncomingComponent implements OnInit {
       purchase_order_item_id: [data?.purchase_order_item_id ?? 0, Validators.required],
       ordered_quantity: [data?.ordered_quantity ?? 0],
       received_quantity: [
-        data?.received_quantity ?? 0,
+        data?.received_quantity ?? 0 ,
         [Validators.required, Validators.min(1), Validators.max((data?.ordered_quantity ?? 0) - (data?.delivered_quantity ?? 0))],
       ],
       delivered_quantity: [data?.delivered_quantity ?? ''],

@@ -362,6 +362,7 @@
                                         [min]="0"
                                         suffix=" {{ row.value.uom_name }}"
                                         class="w-full"
+                                        [ngClass]="{'opacity-60 pointer-events-none' : row.value.item_type_name === 'serialized'}"
                                     ></p-inputNumber>
 
                                     <small
@@ -412,8 +413,16 @@
                                                 class="w-full" 
                                             />
                                         </div>
-                                        <p-button icon="pi pi-plus" label="add" />
-                                        <p-button icon="pi pi-camera" label="Scan" severity="secondary" />
+                                        <p-button 
+                                            icon="pi pi-plus" 
+                                            label="add" 
+                                            (click)="addSerialItem(i, row.value)"
+                                        />
+                                        <p-button 
+                                            icon="pi pi-camera" 
+                                            label="Scan" 
+                                            severity="secondary"  
+                                        />
                                      </div>
 
                                     <div formArrayName="serial_items" class="space-y-2">

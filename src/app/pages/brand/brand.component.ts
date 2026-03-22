@@ -29,6 +29,7 @@ export class BrandComponent implements OnInit {
 
   ngOnInit(): void { 
     this.brandStore.loadBrand();
+    this.brandStore.loadBrands();
   }
 
 }

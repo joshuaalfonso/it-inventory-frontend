@@ -3,4 +3,4 @@
 
 
 
-export const IMAGE_BASE_URL = 'http://192.168.1.11:3000/uploads/';
+export const IMAGE_BASE_URL = 'http://localhost:3000/uploads/';
